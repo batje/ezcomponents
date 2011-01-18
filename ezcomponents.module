@@ -1,0 +1,52 @@
+<?php
+
+
+function ezcomponents_requirements($state) {
+  $result = Array(
+    'title' => 'EzComponents Installed',
+    'description' => 'The eZ Components can be downloaded from www.ezcomponents.org',
+  );
+  
+  if ($state == 'runtime') { 
+    if (module_exists('libraries') && libraries_get_path('ezcomponents')) {
+      $result['value'] = libraries_get_path('ezcomponents');
+      $result['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $result['value'] = '';
+      $result['severity'] = REQUIREMENT_ERROR;
+    }
+  } else {
+    if (module_exists('libraries') && libraries_get_path('ezcomponents')) {
+      $result['value'] = libraries_get_path('ezcomponents');
+      $result['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $result['value'] = '';
+      $result['severity'] = REQUIREMENT_INFO;
+    }
+  }
+  return $result;
+}
+
+
+function ezcomponents_chartgraph_provider() {
+ 
+  $provider =  array(
+    'path' => drupal_get_path('module', 'ezcomponents') .'/inc/graph.inc', //must be full path
+    'clazz' => 'ChartsGraphsEz', //implementation class' name
+    'name' => 'ezGraph', //name used when invoking through a factroy method
+    'nice_name' => 'ezGraph Chart',
+    'chart_types' => array(
+      'line' => t('Line'),
+      'bar' => t('Bar'),
+      'pie' => t('Pie'),          
+      'area' => t('Area'),
+    ),
+  );   
+ 
+  // Array was used for convenience of definition. We need to return an object
+  return (object) $provider;
+ 
+}
+
